@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{%extends 'blog/base.html'%}
+{%block title_block%}DURGA'S BLOG HOME PAGE{%endblock%}</title>
+        {%block content%}
+        <h1>DURGA"S BLOG</h1>
+          {%if tag%}
+            <h2>Posts tagged with '{{tag.name}}'</h2>
+        {%endif%}
+        {%for post in post_list%}
+         <a href="{{post.get_absolute_url}}"> <h2>{{post.title}}</h2> </a>
+         <p id='date'> Published on {{post.publish}} by {{post.author|title}} </p>
+         <p>Tags:
+                 {%for tag in post.tags.all%}
+                   <a href="{%url 'post_list_by_tag_name' tag.slug%}" class="btn btn-success">{{tag.name}}</a>  <!--by using related canonical name i am trying to build the url where arguement is tag.slug-->
+                   {%if not forloop.last%},{%endif%}   <!--to give comma to tags and dont give comma after last tag-->
+                   {%endfor%}
+
+         </p>
+         {{post.body|truncatewords:30|linebreaks}}
+
+        {%endfor%}
+        {%include 'blog//pagination.html' with page=post_list%}
+
+
+        {%endblock%}
